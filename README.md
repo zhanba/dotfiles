@@ -1,10 +1,11 @@
 # dotfiles
 
-## vimrc on windows
+## gvim
 
+## for windows
 ```bash
 git clone repo
-cd $HOME 
-# Administrator mode
-mklink _vimrc repo/_vimrc
+# in Administrator mode
+cd $HOME
+mklink _vimrc dotfiles/_vimrc
 ```
