@@ -16,6 +16,8 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'sjl/badwolf'
 Plugin 'vim-scripts/darktango.vim'
 Plugin 'scrooloose/nerdtree'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
@@ -56,10 +58,12 @@ set smarttab
 set softtabstop=4 " number of spaces in tab when editing
 set expandtab " tabs are spaces
 
+set encoding=utf-8
 set number " show line numbers
 set showcmd " show command in bottom bar
+set virtualedit=onemore             " Allow for cursor beyond last character
 set cursorline " highlight current line
-filetype indent on 
+filetype indent on
 set wildmenu " visual autocomplete for command menu
 set lazyredraw " redraw only when we need to
 set showmatch " highlight matching [{()}]
@@ -81,18 +85,18 @@ nnoremap <space> za
 " }}}
 
 set laststatus=2 " show status bar
-set statusline=\ %<%F[%1*%M%*%n%R%H]%=\ %y\ %0(%{&fileformat}\ [%{(&fenc==\"\"?&enc:&fenc).(&bomb?\",BOM\":\"\")}]\ %c:%l/%L%)\
+" set statusline=\ %<%F[%1*%M%*%n%R%H]%=\ %y\ %0(%{&fileformat}\ [%{(&fenc==\"\"?&enc:&fenc).(&bomb?\",BOM\":\"\")}]\ %c:%l/%L%)\
 
-set backspace=indent,eol,start " set backspace to work
+set backspace=indent,eol,start  " set backspace to work
 
-set noerrorbells            " πÿ±’¥ÌŒÛ–≈œ¢œÏ¡Â
-set novisualbell            " πÿ±’ π”√ø… ”œÏ¡Â¥˙ÃÊ∫ÙΩ–
-set t_vb=                   " ÷√ø’¥ÌŒÛ¡Â…˘µƒ÷’∂À¥˙¬Î
+set noerrorbells            " ÂÖ≥Èó≠ÈîôËØØ‰ø°ÊÅØÂìçÈìÉ
+set novisualbell            " ÂÖ≥Èó≠‰ΩøÁî®ÂèØËßÜÂìçÈìÉ‰ª£ÊõøÂëºÂè´
+set t_vb=                   " ÁΩÆÁ©∫ÈîôËØØÈìÉÂ£∞ÁöÑÁªàÁ´Ø‰ª£Á†Å
 
 " set colorcolumn=81 " highlight 81 column
 
 " you can have unwritten changes to a file and open a new file using :e, without being forced to write or undo your changes first
-set hidden 
+set hidden
 
 set nobackup
 set noswapfile
@@ -100,8 +104,13 @@ set noswapfile
 " highlight whitespaces
 set list
 set listchars=tab:>.,trail:.,extends:#,nbsp:.
+set fillchars=diff:‚£ø,vert:‚îÇ
+" set listchars=tab:‚ñ∏\ ,trail:¬∑,extends:‚ùØ,precedes:‚ùÆ
+" set showbreak=‚Ü™
 
 let mapleader="," " leader is comma
+
+let g:airline_theme='solarized'
 
 " hide
 set guioptions-=m " menu bar
@@ -113,3 +122,10 @@ set guioptions-=r " scrollbar
 
 " on windows
 set guifont=Consolas:h11:cANSI
+
+" gvim window size
+if has("gui_running")
+  " GUI is running or is about to start.
+  " Maximize gvim window (for an alternative on Windows, see simalt below).
+  set lines=35 columns=120
+endif
