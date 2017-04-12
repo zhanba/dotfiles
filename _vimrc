@@ -18,6 +18,8 @@ Plugin 'vim-scripts/darktango.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plugin 'airblade/vim-gitgutter'
 
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
@@ -59,6 +61,15 @@ set softtabstop=4 " number of spaces in tab when editing
 set expandtab " tabs are spaces
 
 set encoding=utf-8
+set termencoding=utf-8
+set fileencodings=utf-8,ucs-bom,GB2312,big5
+" vim的菜单乱码解决
+source $VIMRUNTIME/delmenu.vim
+source $VIMRUNTIME/menu.vim
+
+" vim中缩进的设置以及将tab转换成空格
+language messages zh_CN.utf-8
+
 set number " show line numbers
 set showcmd " show command in bottom bar
 set virtualedit=onemore             " Allow for cursor beyond last character
@@ -67,12 +78,13 @@ filetype indent on
 set wildmenu " visual autocomplete for command menu
 set lazyredraw " redraw only when we need to
 set showmatch " highlight matching [{()}]
-set fileencodings=utf-8,ucs-bom,GB2312,big5
 " Searching {{{
 set incsearch " search as characters are entered
 set hlsearch " highlight matches
 " turn off highlight
-nnoremap <Leader><space> :nohlsearch<CR>
+" nnoremap <Leader><space> :nohlsearch<CR>
+" <Ctrl-l> redraws the screen and removes any search highlighting.
+nnoremap <silent> <C-l> :nohl<CR><C-l>
 " }}}
 
 " Folding {{{
@@ -89,8 +101,8 @@ set laststatus=2 " show status bar
 
 set backspace=indent,eol,start  " set backspace to work
 
-set noerrorbells            " 关闭错误信息响铃
-set novisualbell            " 关闭使用可视响铃代替呼叫
+" set noerrorbells            " 关闭错误信息响铃
+set visualbell            " 关闭使用可视响铃代替呼叫
 set t_vb=                   " 置空错误铃声的终端代码
 
 " set colorcolumn=81 " highlight 81 column
@@ -111,17 +123,20 @@ set fillchars=diff:⣿,vert:│
 let mapleader="," " leader is comma
 
 let g:airline_theme='solarized'
+let g:airline_powerline_fonts=1
 
 " hide
 set guioptions-=m " menu bar
 set guioptions-=T " toolbar
 set guioptions-=r " scrollbar
+set guioptions-=L " left hand scorllbar
 
 " on linux
-" set guifont=Source\ Code\ Pro\ 10
+" set guifont=Monaco 10
 
 " on windows
-set guifont=Consolas:h11:cANSI
+" set guifont=Consolas:h11:cANSI
+set guifont=DejaVu_Sans_Mono_for_Powerline:h11:cANSI
 
 " gvim window size
 if has("gui_running")
@@ -129,3 +144,18 @@ if has("gui_running")
   " Maximize gvim window (for an alternative on Windows, see simalt below).
   set lines=35 columns=120
 endif
+
+" Ctrl+N shortcut for open/close nerdtree
+map <C-n> :NERDTreeToggle<CR>
+" 当不带参数打开Vim时自动加载项目树
+" open NERDTree automatically when vim starts up on opening a directory
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+
+" 当所有文件关闭时关闭项目树窗格
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" 不显示这些文件
+" let NERDTreeIgnore=['\.pyc$', '\~$', 'node_modules'] "ignore files in NERDTree
+" 不显示项目树上额外的信息，例如帮助、提示什么的
+" let NERDTreeMinimalUI=1
