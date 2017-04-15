@@ -15,6 +15,7 @@ Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'sjl/badwolf'
 Plugin 'vim-scripts/darktango.vim'
+Plugin 'tpope/vim-fugitive'
 Plugin 'scrooloose/nerdtree'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -59,6 +60,7 @@ set tabstop=4 " number of visual spaces per TAB
 set smarttab
 set softtabstop=4 " number of spaces in tab when editing
 set expandtab " tabs are spaces
+
 
 set encoding=utf-8
 set termencoding=utf-8
@@ -113,6 +115,9 @@ set hidden
 set nobackup
 set noswapfile
 
+" This makes vim show the current row and column at the bottom right of the screen
+set ruler
+
 " highlight whitespaces
 set list
 set listchars=tab:>.,trail:.,extends:#,nbsp:.
@@ -120,11 +125,21 @@ set fillchars=diff:⣿,vert:│
 " set listchars=tab:▸\ ,trail:·,extends:❯,precedes:❮
 " set showbreak=↪
 
-let mapleader="," " leader is comma
+let mapleader=',' " leader is comma
 
+" airline config
 let g:airline_theme='solarized'
+set t_Co=256
 let g:airline_powerline_fonts=1
 
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+
+let g:airline_section_z = airline#section#create(['windowswap', '%3p%% ', 'linenr', 'maxlinenr', ':%3v'])
+let g:airline_symbols.linenr = ''
+let g:airline_symbols.maxlinenr = ''
+" set rop=type:directx,gamma:1.0,contrast:0.5,level:1,geom:1,renmode:4,taamode:1
 " hide
 set guioptions-=m " menu bar
 set guioptions-=T " toolbar
@@ -136,7 +151,7 @@ set guioptions-=L " left hand scorllbar
 
 " on windows
 " set guifont=Consolas:h11:cANSI
-set guifont=DejaVu_Sans_Mono_for_Powerline:h11:cANSI
+set guifont=DejaVu_Sans_Mono_for_Powerline:h10:cANSI
 
 " gvim window size
 if has("gui_running")
