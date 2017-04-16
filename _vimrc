@@ -20,7 +20,9 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'airblade/vim-gitgutter'
+" Plugin 'airblade/vim-gitgutter'
+Plugin 'mattn/emmet-vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
@@ -56,10 +58,11 @@ colorscheme darktango
 syntax enable
 " }}}
 
-set tabstop=4 " number of visual spaces per TAB
-set smarttab
-set softtabstop=4 " number of spaces in tab when editing
+set tabstop=4 " actual width of a tab
+set softtabstop=0
 set expandtab " tabs are spaces
+set shiftwidth=4 " the sizes of an indent, normally equal to tab
+set smarttab
 
 
 set encoding=utf-8
@@ -139,7 +142,10 @@ endif
 let g:airline_section_z = airline#section#create(['windowswap', '%3p%% ', 'linenr', 'maxlinenr', ':%3v'])
 let g:airline_symbols.linenr = ''
 let g:airline_symbols.maxlinenr = ''
-" set rop=type:directx,gamma:1.0,contrast:0.5,level:1,geom:1,renmode:4,taamode:1
+
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1 " show bufferline
+
 " hide
 set guioptions-=m " menu bar
 set guioptions-=T " toolbar
@@ -158,6 +164,8 @@ if has("gui_running")
   " GUI is running or is about to start.
   " Maximize gvim window (for an alternative on Windows, see simalt below).
   set lines=35 columns=120
+  " close visual bell
+  autocmd GUIEnter * set vb t_vb=
 endif
 
 " Ctrl+N shortcut for open/close nerdtree
@@ -174,3 +182,9 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " let NERDTreeIgnore=['\.pyc$', '\~$', 'node_modules'] "ignore files in NERDTree
 " 不显示项目树上额外的信息，例如帮助、提示什么的
 " let NERDTreeMinimalUI=1
+
+" ignore directory for ctrlp
+let g:ctrlp_custom_ignore = {
+   \ 'dir': 'node_modules\|DS_Store\|.git'
+   \}
+
