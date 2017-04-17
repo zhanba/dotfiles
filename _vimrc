@@ -1,41 +1,30 @@
 set nocompatible              " be iMproved, required
-filetype off                  " required
+" filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
 set rtp+=$HOME/vimfiles/bundle/Vundle.vim
 call vundle#begin('$HOME/vimfiles/bundle/')
 
+let mapleader=',' " leader is comma, should load before plugins
+
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
-" The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-" Plugin 'tpope/vim-fugitive'
 
-Plugin 'sjl/badwolf'
-Plugin 'vim-scripts/darktango.vim'
+Plugin 'morhetz/gruvbox'
 Plugin 'tpope/vim-fugitive'
 Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/syntastic'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
-" Plugin 'airblade/vim-gitgutter'
 Plugin 'mattn/emmet-vim'
 Plugin 'ctrlpvim/ctrlp.vim'
-
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-" Git plugin not hosted on GitHub
-" Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-" Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Install L9 and avoid a Naming conflict if you've already installed a
-" different version somewhere else.
-" Plugin 'ascenator/L9', {'name': 'newL9'}
+Plugin 'airblade/vim-gitgutter'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'easymotion/vim-easymotion'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -53,8 +42,7 @@ filetype plugin indent on    " required
 " Put your non-Plugin stuff after this line
 
 " Colors{{{
-" colorscheme badwolf
-colorscheme darktango
+colorscheme gruvbox
 syntax enable
 " }}}
 
@@ -79,18 +67,31 @@ set number " show line numbers
 set showcmd " show command in bottom bar
 set virtualedit=onemore             " Allow for cursor beyond last character
 set cursorline " highlight current line
-filetype indent on
+"filetype indent on
 set wildmenu " visual autocomplete for command menu
 set lazyredraw " redraw only when we need to
 set showmatch " highlight matching [{()}]
+" set highlight color
+hi MatchParen guibg=NONE guifg=blue gui=bold
 " Searching {{{
 set incsearch " search as characters are entered
 set hlsearch " highlight matches
 " turn off highlight
-" nnoremap <Leader><space> :nohlsearch<CR>
-" <Ctrl-l> redraws the screen and removes any search highlighting.
-nnoremap <silent> <C-l> :nohl<CR><C-l>
+nnoremap <Leader><space> :nohlsearch<CR>
 " }}}
+set updatetime=250 " vim refresh check time
+" set 80 and 120 column warning
+let &colorcolumn="80,".join(range(120,999),",")
+
+" switch buffer
+" previous buffer
+nnoremap <Leader>p :bp<cr>
+" next buffer
+nnoremap <Leader>n :bn<cr>
+" delete buffer
+nnoremap <Leader>d :bd<cr>
+" quit buffer and jump to previous buffer
+nnoremap <leader>q :bp<bar>sp<bar>bn<bar>bd<CR>
 
 " Folding {{{
 set foldenable
@@ -102,7 +103,6 @@ nnoremap <space> za
 " }}}
 
 set laststatus=2 " show status bar
-" set statusline=\ %<%F[%1*%M%*%n%R%H]%=\ %y\ %0(%{&fileformat}\ [%{(&fenc==\"\"?&enc:&fenc).(&bomb?\",BOM\":\"\")}]\ %c:%l/%L%)\
 
 set backspace=indent,eol,start  " set backspace to work
 
@@ -126,12 +126,11 @@ set list
 set listchars=tab:>.,trail:.,extends:#,nbsp:.
 set fillchars=diff:⣿,vert:│
 " set listchars=tab:▸\ ,trail:·,extends:❯,precedes:❮
-" set showbreak=↪
-
-let mapleader=',' " leader is comma
+set showbreak=↪
 
 " airline config
-let g:airline_theme='solarized'
+"let g:airline_theme='solarized'
+let g:airline_theme='gruvbox'
 set t_Co=256
 let g:airline_powerline_fonts=1
 
@@ -156,8 +155,9 @@ set guioptions-=L " left hand scorllbar
 " set guifont=Monaco 10
 
 " on windows
-" set guifont=Consolas:h11:cANSI
-set guifont=DejaVu_Sans_Mono_for_Powerline:h10:cANSI
+set guifont=Noto_Mono_for_Powerline:h11:cANSI
+"set guifont=DejaVu_Sans_Mono_for_Powerline:h10:cANSI
+"set guifont=Source_Code_Pro_for_Powerline:h10:cANSI
 
 " gvim window size
 if has("gui_running")
@@ -166,6 +166,13 @@ if has("gui_running")
   set lines=35 columns=120
   " close visual bell
   autocmd GUIEnter * set vb t_vb=
+  " change renderoption in windows
+  if has('win32') || has('win64')
+    if (v:version == 704 && has("patch393")) || v:version > 704
+        set renderoptions=type:directx,level:0.50,gamma:1.0,contrast:0.0,
+                        \geom:1,renmode:5,taamode:1
+    endif
+  endif
 endif
 
 " Ctrl+N shortcut for open/close nerdtree
@@ -179,12 +186,24 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in
 " 当所有文件关闭时关闭项目树窗格
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " 不显示这些文件
-" let NERDTreeIgnore=['\.pyc$', '\~$', 'node_modules'] "ignore files in NERDTree
+let NERDTreeIgnore=['\.pyc$', '\~$', 'node_modules'] "ignore files in NERDTree
 " 不显示项目树上额外的信息，例如帮助、提示什么的
-" let NERDTreeMinimalUI=1
+let NERDTreeMinimalUI=1
+"
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
 
 " ignore directory for ctrlp
 let g:ctrlp_custom_ignore = {
    \ 'dir': 'node_modules\|DS_Store\|.git'
    \}
 
+" settings for syntastic
+" set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
