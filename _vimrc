@@ -24,7 +24,11 @@ Plugin 'mattn/emmet-vim'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'Valloric/ListToggle'
+Plugin 'ternjs/tern_for_vim'
 Plugin 'easymotion/vim-easymotion'
+Plugin 'pangloss/vim-javascript'
+Plugin 'mxw/vim-jsx'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -67,19 +71,20 @@ set number " show line numbers
 set showcmd " show command in bottom bar
 set virtualedit=onemore             " Allow for cursor beyond last character
 set cursorline " highlight current line
-"filetype indent on
 set wildmenu " visual autocomplete for command menu
 set lazyredraw " redraw only when we need to
 set showmatch " highlight matching [{()}]
-" set highlight color
-hi MatchParen guibg=NONE guifg=blue gui=bold
+
 " Searching {{{
 set incsearch " search as characters are entered
 set hlsearch " highlight matches
 " turn off highlight
-nnoremap <Leader><space> :nohlsearch<CR>
+"nnoremap <Leader><space> :nohlsearch<CR>
+nnoremap <Esc><Esc> :<C-u>nohlsearch<CR>
 " }}}
+
 set updatetime=250 " vim refresh check time
+
 " set 80 and 120 column warning
 let &colorcolumn="80,".join(range(120,999),",")
 
@@ -110,8 +115,6 @@ set backspace=indent,eol,start  " set backspace to work
 set visualbell            " 关闭使用可视响铃代替呼叫
 set t_vb=                   " 置空错误铃声的终端代码
 
-" set colorcolumn=81 " highlight 81 column
-
 " you can have unwritten changes to a file and open a new file using :e, without being forced to write or undo your changes first
 set hidden
 
@@ -129,11 +132,9 @@ set fillchars=diff:⣿,vert:│
 set showbreak=↪
 
 " airline config
-"let g:airline_theme='solarized'
 let g:airline_theme='gruvbox'
 set t_Co=256
 let g:airline_powerline_fonts=1
-
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
@@ -203,7 +204,22 @@ let g:ctrlp_custom_ignore = {
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
+let g:syntastic_always_populate_loc_list = 0
+let g:syntastic_auto_loc_list = 2
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+" 
+nnoremap <silent> <C-d> :lclose<CR>:bdelete<CR>
+cabbrev <silent> bd <C-r>=(getcmdtype()==#':' && getcmdpos()==1 ? 'lclose\|bdelete' : 'bd')<CR>
+
+let g:syntastic_python_checkers = ['pylint']
+let g:syntastic_javascript_checkers = ['eslint']
+
+"set jsx syntax for .js file, not just .jsx
+let g:jsx_ext_required = 0
+
+"toggle location list and quickfix list
+let g:lt_location_list_toggle_map = '<leader>l'
+let g:lt_quickfix_list_toggle_map = '<leader>f'
+
