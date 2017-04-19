@@ -29,6 +29,7 @@ Plugin 'ternjs/tern_for_vim'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
+Plugin 'kkoenig/wimproved.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -79,7 +80,6 @@ set showmatch " highlight matching [{()}]
 set incsearch " search as characters are entered
 set hlsearch " highlight matches
 " turn off highlight
-"nnoremap <Leader><space> :nohlsearch<CR>
 nnoremap <Esc><Esc> :<C-u>nohlsearch<CR>
 " }}}
 
@@ -223,3 +223,10 @@ let g:jsx_ext_required = 0
 let g:lt_location_list_toggle_map = '<leader>l'
 let g:lt_quickfix_list_toggle_map = '<leader>f'
 
+"auto close preview window in YouCompleteMe
+let g:ycm_autoclose_preview_window_after_completion = 1
+
+"set for wimproved, clear gvim white border on windows
+autocmd GUIEnter * silent! WToggleClean
+"toggle fullscreen
+map <F11> :WToggleFullscreen<CR>
