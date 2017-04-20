@@ -28,8 +28,13 @@ mklink .eslintrc.json dotfiles/.eslintrc.json
 .gitignore
 
 ## tern
-put .tern-config in ~/home or .tern-project in project root
+put .tern-config in ~/home or make a link
+.tern-project in project root
 
 ## npm
 just set proxy
-put .npmrc in your ~/home
+put .npmrc in your ~/home, or you can make a link
+
+## pip
+on windows, put pip directory on ~/home, or make a link
+make pip use douban source
