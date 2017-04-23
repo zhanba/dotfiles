@@ -37,4 +37,7 @@ put .npmrc in your ~/home, or you can make a link
 
 ## pip
 on windows, put pip directory on ~/home, or make a link
-make pip use douban source
+```bash
+# Creates a directory symbolic link.
+mklink /d pip dotfiles\pip
+```

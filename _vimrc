@@ -29,6 +29,8 @@ Plugin 'ternjs/tern_for_vim'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'tpope/vim-surround'
 Plugin 'kkoenig/wimproved.vim'
 
 " All of your Plugins must be added before the following line
@@ -170,6 +172,8 @@ if has("gui_running")
   set lines=35 columns=120
   " close visual bell
   autocmd GUIEnter * set vb t_vb=
+  " auto maximize window when start vim, only for windows
+  au GUIEnter * simalt ~x
   " change renderoption in windows
   if has('win32') || has('win64')
     if (v:version == 704 && has("patch393")) || v:version > 704
