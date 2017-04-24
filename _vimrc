@@ -126,12 +126,13 @@ set noswapfile
 " This makes vim show the current row and column at the bottom right of the screen
 set ruler
 
-" highlight whitespaces
+"show hidden char
 set list
-set listchars=tab:>.,trail:.,extends:#,nbsp:.
-set fillchars=diff:⣿,vert:│
-" set listchars=tab:▸\ ,trail:·,extends:❯,precedes:❮
 set showbreak=↪
+set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨
+
+" set seperator line char
+set fillchars=diff:⣿,vert:\ 
 
 "Remove all trailing whitespace by pressing F5
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
