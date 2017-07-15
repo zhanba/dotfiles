@@ -32,6 +32,8 @@ Plugin 'mxw/vim-jsx'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'tpope/vim-surround'
 Plugin 'kkoenig/wimproved.vim'
+Plugin 'SirVer/ultisnips'
+Plugin 'epilande/vim-react-snippets'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -88,7 +90,9 @@ nnoremap <Esc><Esc> :<C-u>nohlsearch<CR>
 set updatetime=250 " vim refresh check time
 
 " set 80 and 120 column warning
-let &colorcolumn="80,".join(range(120,999),",")
+"let &colorcolumn="80,".join(range(120,999),",")
+highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+match OverLength /\%81v.\+/
 
 " switch buffer
 " previous buffer
@@ -233,3 +237,6 @@ let g:ycm_autoclose_preview_window_after_completion = 1
 autocmd GUIEnter * silent! WToggleClean
 "toggle fullscreen
 map <F11> :WToggleFullscreen<CR>
+
+" Trigger snippets
+ let g:UltiSnipsExpandTrigger="<C-l>"
