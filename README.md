@@ -1,8 +1,15 @@
 # dotfiles
 
-## gvim
+## vim on fedora
 
-### for windows
+https://fedoramagazine.org/add-power-terminal-powerline/
+
+```bash
+ln -sf ~/path/to/your/dotfile ~/.vimrc
+```
+
+
+## Gvim on windows
 ```bash
 git clone repo
 # in Administrator mode
